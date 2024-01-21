@@ -67,16 +67,6 @@ select top 3 state,Round(100*AVG(growth),3) Average_growth from [Indiancensus_pr
 group by State 
 order by Average_growth desc
 
---------------------------------------------------------------------------------------------------------
-
---- Total males and females
-
-Select c.District , c.Males,c.Females from
- (select a.district, a.state, round((b.population)/(1+ (a.sex_ratio/1000)),0) males,
- round((b.population*(a.sex_ratio/1000))/(1+(a.Sex_Ratio/1000)),0) females,
-  b.population population from [Indiancensus_project]..Dataset1 a 
-  inner join [Indiancensus_project]..Dataset2 b on a.District= b.District )c 
-
   --------------------------------------------------------------------------------------------------------
   
 --Total literacy rate and area of state
@@ -94,11 +84,9 @@ Select State,District,population,round(Population/(1+Growth),0) Previous_year_po
 
  --------------------------------------------------------------------------------------------------------
 
--- window
 -- top 3 states having heighest litracy rate 
 
-select a.* from
-(select district,state,literacy,rank() over(partition by state order by literacy desc) rank from [Indiancensus_project]..Dataset1) a
-where a.rank in (1,2,3) order by state
+select district,state,literacy from [Indiancensus_project]..Dataset1
+where order by literacy desc;
 
 
